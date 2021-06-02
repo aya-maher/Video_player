@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style>
+        section{
+            border:1px solid black;
+            padding:5px;
+            margin:10px;
+        }
+        #mainwrapper{
+        width:800px;
+        height:400px;
+        margin:10px auto;
+        padding:10px;
+        display:-webkit-box;
+        text-align: center;
+        border: 3px double rgb(116, 95, 189);
+        background: -webkit-radial-gradient(circle, white 40%,rgb(65, 95, 107));
+        box-shadow: 5px 10px 18px rgb(116, 107, 126);
+        border-radius: 10px;
+        overflow: auto;
+        resize: both;
+        transition: all 2s;
+    }
+        #left,#right{
+            width:250px;
+            height:370px;
+            border: 2px solid rgb(119, 100, 100);
+            border-radius: 10px;
+        }
+        #right{
+            text-align:center;
+            -webkit-box-flex:1;
+        }
+        details{
+            margin-top:2px;
+            border:1px solid rgb(206, 182, 182);
+            font:bold 12px tahoma;
+            margin: auto;
+            padding: 5px;
+            text-align: center;
+            border: 3px solid black;
+            border-radius: 10px;
+            background: -webkit-radial-gradient(ellipse, white 30%,rgb(7, 64, 87));
+        }
+        input[type="button"]{
+            width:70px;
+            border-radius:5px;
+            font:bold 13px tahoam;
+        }
+            input[type="button"]:focus {
+                outline: none;
+            }
+    </style>
+    <script>
+        window.addEventListener('load', function () {
+            // video
+            myvideo = document.getElementById('myvideo');
+            // playpausebtn
+            playpausebtn = document.getElementById('playpausebtn');
+            // myseekbar
+            myseekbar = document.getElementById('myseekbar');
+            // myvolume
+            myvolume = document.getElementById('myvolume');
+        });
+        function playpausefun() {
+            if (myvideo.paused) {
+                myvideo.play();
+                playpausebtn.value = 'Pause';
+            } else {
+                myvideo.pause();
+                playpausebtn.value = 'Play';
+            }
+        }
+        function changevideosizefun(e) {
+            switch (e.value) {
+                case 'small':
+                    myvideo.width = myvideo.height = 200;
+                    break;
+                case 'medium':
+                    myvideo.width = myvideo.height = 300;
+                    break;
+                case 'large':
+                    myvideo.width = myvideo.height = 350;
+                    break;
+                case 'fullscreen':
+                    myvideo.webkitRequestFullScreen();
+                    break;
+
+            }
+        }
+        function mutefun() {
+            //one line
+            myvideo.muted ? myvideo.muted = false : myvideo.muted = true ;
+        }
+        function loopfun() {
+            //one line
+            myvideo.loop ? myvideo.loop = false : myvideo.loop = true ;
+        }
+        function changevolumefun() {
+            myvideo.volume = myvolume.value;
+        }
+        function changeseekbarfun() {
+            myvideo.currentTime = (myseekbar.value * myvideo.duration) / 100;
+            // check moving of seekbar
+
+        }
+        function forwardfun() { 
+            myvideo.playbackRate++;
+        }
+        function backwardfun() {
+            myvideo.playbackRate--;
+            if (myvideo.playbackRate == 0) myvideo.playbackRate = 1;
+        }
+        function slowfun() {
+            myvideo.playbackRate = 0.2;
+        }
+    </script>
+</head>
+<body>
+    <section id="mainwrapper">
+        <section id="left">
+            <details>
+                <summary>Play | Pause</summary>
+                <input type="button" value="Play" onclick="playpausefun();" id="playpausebtn"/>
+            </details>
+            <details>
+                <summary>Video Sizes</summary>
+                <select onchange="changevideosizefun(this);">
+                    <option>Select Your Video Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="fullscreen">FullScreen</option>
+                </select>
+            </details>
+            <details>
+                <summary>Loop | Mute</summary>
+                <input type="checkbox" onchange="mutefun()"/>Mute<br/>
+                <input type="checkbox" onchange="loopfun()" />Loop<br />
+            </details>
+            <details>
+                <summary>Volume</summary>
+                <input type="range" min="0" max="1" step="0.1" value="0.5" onchange="changevolumefun();" id="myvolume"/>
+            </details>
+            <details>
+                <summary>SeekBar</summary>
+                <input type="range" min="0" max="100" value="0" step="any" onchange="changeseekbarfun();" id="myseekbar"/>
+            </details>
+            <details>
+                <summary>>> | <<</summary>
+                <input type="button" value=">>" onclick="forwardfun();"/>
+                <input type="button" value="<<" onclick="backwardfun();" />
+            </details>
+            <details>
+                <summary>Slow Motion</summary>
+                <input type="button" value="Slow" onclick="slowfun();"/>
+            </details>
+        </section>
+        <section id="right">
+            <video src="ted.mp4" width="250" height="250" id="myvideo"/>
+            <track src="fgsubtitles_en.vtt" kind="subtitles" srclang="en" label="English">
+        </section>
+    </section>
+</body>
+</html>
